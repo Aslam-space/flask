@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Momentum Engine - Solar Edition</title>
+<link rel='stylesheet' href='/static/style.css'>
+<link rel='preconnect' href='https://fonts.googleapis.com'>
+<link rel='preconnect' href='https://fonts.gstatic.com' crossorigin>
+<link href='https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Rajdhani:wght@300;400;600;700&family=Share+Tech+Mono&family=Inter:wght@400;600;800&family=Space+Grotesk:wght@400;600;700&display=swap' rel='stylesheet'>
+</head>
+<body>
+
+<canvas id='spaceCanvas'></canvas>
+<canvas id='nebulaCanvas'></canvas>
+<div id='cursorDot'></div>
+<div id='cursorRing'></div>
+
+<!-- PLANET DETAIL MODAL -->
+<div id='planetModal' class='planet-modal'>
+  <div class='modal-inner'>
+    <button class='modal-close' onclick='closeModal()'>&#10005;</button>
+    <div class='modal-left'>
+      <div class='modal-planet-badge' id='modalBadge'>I</div>
+      <canvas id='planetDetailCanvas' width='260' height='260'></canvas>
+      <div class='modal-planet-glow' id='modalPlanetGlow'></div>
+      <div class='modal-orbit-ring'></div>
+    </div>
+    <div class='modal-right'>
+      <div class='modal-header-row'>
+        <div>
+          <div class='modal-planet-name' id='modalName'>EARTH</div>
+          <div class='modal-planet-type' id='modalType'>Terrestrial Planet</div>
+        </div>
+        <div class='modal-rank-badge' id='modalRank'>RANK #3</div>
+      </div>
+      <div class='modal-divider'></div>
+      <div class='modal-stats-grid' id='modalStats'></div>
+      <div class='modal-divider'></div>
+      <div class='modal-bars-section' id='modalBars'></div>
+      <div class='modal-divider'></div>
+      <div class='modal-desc-title'>&#9654; SURFACE PROFILE</div>
+      <div class='modal-description' id='modalDesc'></div>
+      <div class='modal-moons' id='modalMoons'></div>
+      <div class='modal-notable' id='modalNotable'></div>
+    </div>
+  </div>
+</div>
+<div id='modalOverlay' class='modal-overlay' onclick='closeModal()'></div>
+
+<!-- HUD -->
+<div class='hud-overlay'>
+  <div class='hud-top-left'>
+    <div class='hud-logo'>
+      <span class='hud-logo-tri'>&#9651;</span> SOLARIS ENGINE
+      <span class='hud-version'>v4.2</span>
+    </div>
+    <div class='hud-sep'></div>
+    <div class='hud-label'>ACTIVE BODY</div>
+    <div class='hud-sub' id='planetFocus'>HELIOCENTRIC VIEW</div>
+    <div class='hud-coords' id='hudCoords'>X: &mdash; &nbsp; Y: &mdash;</div>
+    <div class='hud-sep'></div>
+    <div class='hud-label'>SYSTEM STATUS</div>
+    <div class='hud-status-row'>
+      <span class='hud-dot green'></span><span class='hud-status-text'>NOMINAL</span>
+    </div>
+  </div>
+  <div class='hud-top-right'>
+    <div class='hud-label'>TIME WARP</div>
+    <div class='speed-controls'>
+      <button onclick='setSpeed(0.1)' class='btn-speed'>0.1x</button>
+      <button onclick='setSpeed(0.5)' class='btn-speed'>0.5x</button>
+      <button onclick='setSpeed(1)' class='btn-speed active' id='speed1'>1x</button>
+      <button onclick='setSpeed(5)' class='btn-speed'>5x</button>
+      <button onclick='setSpeed(20)' class='btn-speed'>20x</button>
+    </div>
+    <div class='hud-sep'></div>
+    <div class='hud-label'>DISPLAY LAYERS</div>
+    <div class='toggle-controls'>
+      <button onclick='toggleOrbits()' class='btn-toggle active' id='btnOrbits'>ORBITS</button>
+      <button onclick='toggleLabels()' class='btn-toggle active' id='btnLabels'>LABELS</button>
+      <button onclick='toggleTrails()' class='btn-toggle active' id='btnTrails'>TRAILS</button>
+    </div>
+    <div class='toggle-controls' style='margin-top:5px'>
+      <button onclick='toggleAsteroids()' class='btn-toggle active' id='btnAsteroids'>ASTEROIDS</button>
+      <button onclick='toggleGlow()' class='btn-toggle active' id='btnGlow'>CORONA</button>
+    </div>
+  </div>
+</div>
+
+<!-- SCANLINE OVERLAY -->
+<div class='scanlines'></div>
+<div class='vignette'></div>
+
+<div class='container'>
+    <header>
+        <div class='logo-wrap'>
+          <div class='logo-glow'></div>
+          <h1><span class='logo-star'>&#11088;</span> Momentum Engine</h1>
+          <div class='logo-tagline'>SOLAR EDITION &nbsp;&bull;&nbsp; 2026 &nbsp;&bull;&nbsp; ULTRA GRADE</div>
+        </div>
+        <div class='header-controls'>
+          <div class='theme-switcher'>
+            <button onclick='setTheme(""day"")' class='theme-btn' data-theme='day'>&#9728; Day</button>
+            <button onclick='setTheme(""sunset"")' class='theme-btn' data-theme='sunset'>&#127749; Dusk</button>
+            <button onclick='setTheme(""night"")' class='theme-btn active' data-theme='night'>&#127756; Deep Space</button>
+          </div>
+        </div>
+    </header>
+
+    <!-- PLANET INFO BAR -->
+    <div class='planet-info-bar' id='planetInfoBar'>
+      <div class='pib-icon' id='pibIcon'>&#9711;</div>
+      <span id='planetInfoText'>Click any planet to view full data profile</span>
+      <div class='pib-pulse'></div>
+    </div>
+
+    <!-- PLANET QUICK-SELECT ROW -->
+    <div class='planet-select-row'>
+      <button class='planet-pill' onclick='focusPlanet(0)' style='--pc:#c8c8c8;--pc2:#888888'>&#9679; Mercury</button>
+      <button class='planet-pill' onclick='focusPlanet(1)' style='--pc:#f5c842;--pc2:#c89010'>&#9679; Venus</button>
+      <button class='planet-pill' onclick='focusPlanet(2)' style='--pc:#2a9fd6;--pc2:#0d5986'>&#9679; Earth</button>
+      <button class='planet-pill' onclick='focusPlanet(3)' style='--pc:#e8704a;--pc2:#7a2000'>&#9679; Mars</button>
+      <button class='planet-pill' onclick='focusPlanet(4)' style='--pc:#e8c07a;--pc2:#8c5a18'>&#9679; Jupiter</button>
+      <button class='planet-pill' onclick='focusPlanet(5)' style='--pc:#f8edd0;--pc2:#b8a070'>&#9679; Saturn</button>
+      <button class='planet-pill' onclick='focusPlanet(6)' style='--pc:#7de8e8;--pc2:#3a9090'>&#9679; Uranus</button>
+      <button class='planet-pill' onclick='focusPlanet(7)' style='--pc:#8090ff;--pc2:#1a2a90'>&#9679; Neptune</button>
+    </div>
+
+    <!-- QUOTE CARD -->
+    <div class='quote-card' id='quoteCard'>
+        <div class='quote-corner tl'></div>
+        <div class='quote-corner tr'></div>
+        <div class='quote-corner bl'></div>
+        <div class='quote-corner br'></div>
+        <div class='quote-stripe'></div>
+        <div class='quote-icon'>&#10022;</div>
+        <p id='quoteText'>Loading motivational quotes...</p>
+        <div class='quote-author' id='quoteAuthor'></div>
+        <div class='quote-cat-badge' id='quoteCatBadge'>DISCIPLINE</div>
+        <div class='quote-progress'>
+          <div class='quote-progress-bar' id='progressBar'></div>
+          <div class='quote-progress-glow' id='progressGlow'></div>
+        </div>
+        <div class='controls'>
+            <button onclick='prevQuote()'>&#8592; Prev</button>
+            <button onclick='randomQuote()'>&#9762; Random</button>
+            <button onclick='nextQuote()'>Next &#8594;</button>
+        </div>
+        <div class='category-filters'>
+          <button onclick='filterCategory(""all"")' class='cat-btn active' data-cat='all'>All</button>
+          <button onclick='filterCategory(""discipline"")' class='cat-btn' data-cat='discipline'>Discipline</button>
+          <button onclick='filterCategory(""focus"")' class='cat-btn' data-cat='focus'>Focus</button>
+          <button onclick='filterCategory(""growth"")' class='cat-btn' data-cat='growth'>Growth</button>
+        </div>
+    </div>
+
+    <!-- STATS ROW -->
+    <div class='stats-row'>
+      <div class='stat-card'>
+        <div class='stat-icon'>&#9684;</div>
+        <div class='stat-num' id='statPlanets'>8</div>
+        <div class='stat-label'>Planets</div>
+      </div>
+      <div class='stat-card'>
+        <div class='stat-icon'>&#10064;</div>
+        <div class='stat-num' id='statQuotes'>24</div>
+        <div class='stat-label'>Quotes</div>
+      </div>
+      <div class='stat-card'>
+        <div class='stat-icon'>&#9900;</div>
+        <div class='stat-num' id='statOrbits'>0</div>
+        <div class='stat-label'>Earth Orbits</div>
+      </div>
+      <div class='stat-card'>
+        <div class='stat-icon'>&#9733;</div>
+        <div class='stat-num' id='statStreak'>1</div>
+        <div class='stat-label'>Day Streak</div>
+      </div>
+      <div class='stat-card'>
+        <div class='stat-icon'>&#8987;</div>
+        <div class='stat-num' id='statFPS'>60</div>
+        <div class='stat-label'>FPS</div>
+      </div>
+    </div>
+
+</div>
+
+<div id='tooltip' class='tooltip'></div>
+
+<script src='/static/script.js'></script>
+</body>
+</html>

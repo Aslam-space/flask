@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toon Universe</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<header>
+  <div class="logo">Toon Universe</div>
+  <nav>
+    <a href="#">Home</a>
+    <a href="#">World</a>
+    <a href="#">Fun</a>
+    <a href="#">Contact</a>
+  </nav>
+</header>
+
+<section class="hero">
+  <h1>Welcome to Toon Universe</h1>
+  <p>Dynamic • Animated • Interactive</p>
+</section>
+
+<section class="controls">
+  <button data-mode="day">Day</button>
+  <button data-mode="sunset">Sunset</button>
+  <button data-mode="night">Night</button>
+  <button data-mode="forest">Forest</button>
+  <button data-mode="ocean">Ocean</button>
+  <button id="danceBtn">Dance</button>
+</section>
+
+<section class="scene">
+  <div class="sun"></div>
+  <div class="cloud"></div>
+  <div class="cloud cloud2"></div>
+
+  <div class="tree"></div>
+
+  <div class="ball" id="ball"></div>
+
+  <div class="penguin" id="penguin">
+    <div class="eye left-eye"></div>
+    <div class="eye right-eye"></div>
+  </div>
+
+  <div class="stars" id="stars"></div>
+  <div class="particles" id="particles"></div>
+</section>
+
+<footer>
+  © 2026 Toon Universe
+</footer>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+</body>
+</html>

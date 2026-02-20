@@ -1,0 +1,233 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Fredoka',sans-serif;
+}
+
+body{
+transition:background 1s ease;
+overflow-x:hidden;
+}
+
+header{
+display:flex;
+justify-content:space-between;
+padding:15px 5%;
+background:rgba(255,255,255,0.7);
+backdrop-filter:blur(10px);
+position:sticky;
+top:0;
+z-index:100;
+}
+
+.logo{
+font-size:1.5rem;
+font-weight:700;
+}
+
+nav a{
+margin-left:15px;
+text-decoration:none;
+font-weight:600;
+transition:.3s;
+}
+
+nav a:hover{
+transform:scale(1.1);
+}
+
+.hero{
+text-align:center;
+padding:50px 20px;
+animation:fadeIn 1s ease forwards;
+}
+
+.controls{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:15px;
+padding:20px;
+}
+
+.controls button{
+padding:12px 25px;
+border:none;
+border-radius:40px;
+cursor:pointer;
+min-width:120px;
+min-height:44px;
+transition:.3s;
+}
+
+.controls button:hover{
+transform:scale(1.1) rotate(-2deg);
+}
+
+.scene{
+position:relative;
+height:420px;
+overflow:hidden;
+}
+
+/* SUN */
+.sun{
+position:absolute;
+top:40px;
+right:80px;
+width:100px;
+height:100px;
+background:yellow;
+border-radius:50%;
+box-shadow:0 0 40px yellow;
+animation:pulse 3s infinite ease-in-out;
+}
+
+/* CLOUD */
+.cloud{
+position:absolute;
+top:60px;
+left:-200px;
+width:160px;
+height:60px;
+background:white;
+border-radius:50px;
+animation:cloudMove 25s linear infinite;
+}
+
+.cloud2{
+top:120px;
+animation-duration:35s;
+}
+
+/* TREE */
+.tree{
+position:absolute;
+bottom:0;
+left:80px;
+width:20px;
+height:100px;
+background:#8B4513;
+}
+
+.tree::after{
+content:'';
+position:absolute;
+bottom:80px;
+left:-30px;
+width:80px;
+height:80px;
+background:green;
+border-radius:50%;
+animation:sway 4s infinite ease-in-out;
+}
+
+/* BALL */
+.ball{
+width:60px;
+height:60px;
+background:red;
+border-radius:50%;
+position:absolute;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+animation:bounce 1.5s infinite;
+}
+
+/* PENGUIN */
+.penguin{
+position:absolute;
+bottom:20px;
+right:100px;
+width:100px;
+height:120px;
+background:black;
+border-radius:50% 50% 40% 40%;
+display:flex;
+justify-content:center;
+align-items:flex-start;
+padding-top:30px;
+}
+
+.eye{
+width:15px;
+height:15px;
+background:white;
+border-radius:50%;
+margin:0 8px;
+position:relative;
+}
+
+.eye::after{
+content:'';
+width:6px;
+height:6px;
+background:black;
+border-radius:50%;
+position:absolute;
+top:4px;
+left:4px;
+}
+
+/* STARS */
+.stars{
+position:absolute;
+width:100%;
+height:100%;
+pointer-events:none;
+opacity:0;
+transition:opacity 1s ease;
+}
+
+.star{
+width:4px;
+height:4px;
+background:white;
+border-radius:50%;
+position:absolute;
+animation:twinkle 2s infinite alternate;
+}
+
+/* PARTICLES */
+.particles{
+position:absolute;
+width:100%;
+height:100%;
+pointer-events:none;
+}
+
+@keyframes pulse{
+0%,100%{transform:scale(1)}
+50%{transform:scale(1.1)}
+}
+
+@keyframes bounce{
+0%,100%{transform:translate(-50%,0)}
+50%{transform:translate(-50%,-120px)}
+}
+
+@keyframes cloudMove{
+from{left:-200px}
+to{left:110%}
+}
+
+@keyframes sway{
+0%,100%{transform:rotate(0)}
+50%{transform:rotate(5deg)}
+}
+
+@keyframes twinkle{
+from{opacity:.2}
+to{opacity:1}
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px)}
+to{opacity:1;transform:translateY(0)}
+}
+
+@media(max-width:600px){
+.scene{height:300px}
+}
