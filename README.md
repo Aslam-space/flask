@@ -2,7 +2,7 @@
 ### Flask • Python • AWS EC2 • Docker • Render • Gunicorn • Nginx
 
 🔗 **Live Demo:**
-https://github.com/Aslam-space/flask
+https://flask-2-7tfz.onrender.com
 
 [![Python](https://img.shields.io/badge/Python-3.11-blue?style=flat-square&logo=python)](https://python.org)
 [![Flask](https://img.shields.io/badge/Framework-Flask-black?style=flat-square&logo=flask)](https://flask.palletsprojects.com)
@@ -333,11 +333,9 @@ chmod +x deploy_flask_8080.sh
 ## 14. Author
 
 **Aslam A**
-Cloud & DevOps Engineer | India
+Cloud & DevOps DEMON! | India
 
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=flat-square&logo=linkedin)](https://www.linkedin.com/in/aslama77)
 [![GitHub](https://img.shields.io/badge/GitHub-Follow-181717?style=flat-square&logo=github)](https://github.com/Aslam-space)
 
 ---
-
-*Open to DevOps, Cloud Engineering and Technical Support opportunities in Bangalore.*
